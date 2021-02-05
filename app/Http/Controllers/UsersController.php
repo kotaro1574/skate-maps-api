@@ -19,4 +19,22 @@ class UsersController extends Controller
             return response()->json(['status' => 'not found'], 404);
         }
     }
+    public function put(Request $request)
+    {
+        $upload_image = $request->file;
+        if ($upload_image) {
+            $path = $upload_image->store('uploads', "public");
+        }
+        $param = [
+            'name' => $request->name,
+            'profile' => $request->profile,
+            'address' => $request->address,
+            'image' => $path
+        ];
+        DB::table('users')->where('email', $request->email)->update($param);
+        return response()->json([
+            'message' => 'User updated successfully',
+            'data' => $param
+        ], 200);
+    }
 }
