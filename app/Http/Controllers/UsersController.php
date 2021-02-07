@@ -21,15 +21,13 @@ class UsersController extends Controller
     }
     public function put(Request $request)
     {
-        $upload_image = $request->file;
-        if ($upload_image) {
-            $path = $upload_image->store('uploads', "public");
-        }
+        // $file_name = $request->file->getClientOriginalName();
+        // $path = $request->file->storeAs('public/',$file_name);
         $param = [
             'name' => $request->name,
             'profile' => $request->profile,
             'address' => $request->address,
-            'image' => $path
+            'image' => $request->file
         ];
         DB::table('users')->where('email', $request->email)->update($param);
         return response()->json([
