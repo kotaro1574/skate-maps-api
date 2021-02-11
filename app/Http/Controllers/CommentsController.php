@@ -16,7 +16,7 @@ class CommentsController extends Controller
      */
     public function index(Request $request)
     {
-        $comments = DB::table('comments')->where('post_id', $request->post_id)->get();
+        $comments = Comment::where('post_id', $request->post_id)->get();
         return response()->json([
             'message' => 'OK',
             'data' => $comments
@@ -53,10 +53,20 @@ class CommentsController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show(Comment $comment, Request $request)
     {
         $comment = Comment::where('id', $comment->id)->first();
-        return response()->json($comment, 200);
+        $user_id = $comment->user_id;
+        $user = DB::table('users')->where('id', (int)$user_id)->first();
+        $commentData = [
+            'comment' => $comment,
+            'user' => $user
+        ];
+        if ($commentData) {
+            return response()->json($commentData, 200);
+        } else {
+            return response()->json('null', 404);
+        }
     }
 
     /**
@@ -79,6 +89,17 @@ class CommentsController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $item = Comment::where('id', $comment->id)->delete();
+        if ($item) {
+            return response()->json(
+                ['message' => 'Comment deleted successfully'],
+                200
+            );
+        } else {
+            return response()->json(
+                ['message' => 'Comment not found'],
+                404
+            );
+        }
     }
 }

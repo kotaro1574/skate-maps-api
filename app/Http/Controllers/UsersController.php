@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,12 +13,20 @@ class UsersController extends Controller
         if ($request->has('email')) {
             $items = DB::table('users')->where('email', $request->email)->get();
             return response()->json([
-                'message' => 'User got successfully',
+                'message' => 'User get successfully',
                 'data' => $items
             ], 200);
         } else {
             return response()->json(['status' => 'not found'], 404);
         }
+    }
+    public function show(Request $request, User $user)
+    {
+        $user = DB::table('users')->where('id', $user->id)->first();
+        return response()->json([
+            'message' => 'User get successfully',
+            'data' => $user
+        ], 200);
     }
     public function put(Request $request)
     {

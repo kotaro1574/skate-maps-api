@@ -29,4 +29,5 @@ Route::post('/register', [RegisterController::class, 'post']);
 Route::post('/login', [LoginController::class, 'post']);
 Route::post('/logout', [LogoutController::class, 'post']);
 Route::get('/user', [UsersController::class, 'get']);
+Route::get('/user/{user}', [UsersController::class, 'show']);
 Route::put('/user', [UsersController::class, 'put']);
