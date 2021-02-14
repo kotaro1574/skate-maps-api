@@ -18,7 +18,7 @@ class CreateCommentsTable extends Migration
             $table->string('post_id');
             $table->string('user_id');
             $table->string('comment');
-            $table->longText('commentImg');
+            $table->longText('commentImg')->nullable();
             $table->timestamps();
         });
     }

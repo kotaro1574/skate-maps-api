@@ -16,7 +16,8 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('spotName');
-            $table->string('spotAddress');
+            $table->string('spotLat');
+            $table->string('spotLng');
             $table->longText('spotImg');
             $table->timestamps();
         });

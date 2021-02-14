@@ -33,7 +33,8 @@ class UsersController extends Controller
         $param = [
             'name' => $request->name,
             'profile' => $request->profile,
-            'address' => $request->address,
+            'userLat' => $request->userLat,
+            'userLng' => $request->userLng,
             'image' => $request->file
         ];
         DB::table('users')->where('email', $request->email)->update($param);

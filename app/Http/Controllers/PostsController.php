@@ -34,7 +34,8 @@ class PostsController extends Controller
         $now = Carbon::now();
         $param = [
             "spotName" => $request->spotName,
-            "spotAddress" => $request->spotAddress,
+            "spotLat" => $request->spotLat,
+            "spotLng" => $request->spotLng,
             "spotImg" => $request->spotImg,
             "created_at" => $now,
             "updated_at" => $now,
@@ -69,7 +70,9 @@ class PostsController extends Controller
     {
         $param = [
             'spotName' => $request->spotName,
-            'spotImg' => $request->spotImg
+            'spotImg' => $request->spotImg,
+            'spotLat' => $request->spotLat,
+            'spotLng' => $request->spotLng
         ];
         DB::table('posts')->where('id', $request->spotId)->update($param);
         return response()->json([
