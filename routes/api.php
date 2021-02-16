@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CommentsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
@@ -8,6 +7,8 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\LikesController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,3 +32,5 @@ Route::post('/logout', [LogoutController::class, 'post']);
 Route::get('/user', [UsersController::class, 'get']);
 Route::get('/user/{user}', [UsersController::class, 'show']);
 Route::put('/user', [UsersController::class, 'put']);
+Route::post('/like', [LikesController::class, 'post']);
+Route::delete('/like', [LikesController::class, 'delete']);

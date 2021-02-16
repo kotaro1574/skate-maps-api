@@ -33,12 +33,13 @@ class PostsController extends Controller
     {
         $now = Carbon::now();
         $param = [
-            "spotName" => $request->spotName,
-            "spotLat" => $request->spotLat,
-            "spotLng" => $request->spotLng,
-            "spotImg" => $request->spotImg,
-            "created_at" => $now,
-            "updated_at" => $now,
+            'user_id' => $request->userId,
+            'spotName' => $request->spotName,
+            'spotLat' => $request->spotLat,
+            'spotLng' => $request->spotLng,
+            'spotImg' => $request->spotImg,
+            'created_at' => $now,
+            'updated_at' => $now,
         ];
         DB::table('posts')->insert($param);
         return response()->json([
@@ -56,7 +57,31 @@ class PostsController extends Controller
     public function show(Post $post)
     {
         $spot = Post::where('id', $post->id)->first();
-        return response()->json($spot, 200);
+        $like = DB::table('likes')->where('post_id', $post->id)->get();
+        $comment = DB::table('comments')->where('post_id', $post->id)->get();
+        $commentData = array();
+        if (empty($comment->toArray())) {
+            $spotData = [
+                'spot' => $spot,
+                'like' => $like,
+                'comments' => $commentData
+            ];
+            return response()->json($spotData, 200);
+        }
+        foreach ($comment as $value) {
+            $commentUser = DB::table('users')->where('id', $value->user_id)->first();
+            $comments = [
+                'comment' => $value,
+                'commentUser' => $commentUser
+            ];
+            array_push($commentData, $comments);
+        }
+        $spotData = [
+            'spot' => $spot,
+            'like' => $like,
+            'comments' => $commentData
+        ];
+        return response()->json($spotData, 200);
     }
 
     /**
