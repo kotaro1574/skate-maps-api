@@ -31,13 +31,19 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'spotName' => 'required|max:255',
+            'spotImg' => 'required',
+            'spotLat' => 'required',
+            'spotLng' => 'required',
+        ]);
         $now = Carbon::now();
         $param = [
             'user_id' => $request->userId,
             'spotName' => $request->spotName,
+            'spotImg' => $request->spotImg,
             'spotLat' => $request->spotLat,
             'spotLng' => $request->spotLng,
-            'spotImg' => $request->spotImg,
             'created_at' => $now,
             'updated_at' => $now,
         ];

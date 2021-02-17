@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,13 @@ class RegisterController extends Controller
 {
     public function post(Request $request)
     {
-        
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+            'password' => 'required|min:6|max:12',
+            'userLat' => 'required',
+            'userLng' => 'required'
+        ]);
         $now = Carbon::now();
         $hashed_password = Hash::make($request->password);
         $param = [
