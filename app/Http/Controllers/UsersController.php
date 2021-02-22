@@ -30,6 +30,10 @@ class UsersController extends Controller
     }
     public function put(Request $request)
     {
+        $request->validate([
+            'name' => 'max:255',
+            'profile' => 'max:600'
+        ]);
         $param = [
             'name' => $request->name,
             'profile' => $request->profile,

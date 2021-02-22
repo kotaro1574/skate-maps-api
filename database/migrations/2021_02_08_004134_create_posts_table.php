@@ -17,6 +17,8 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('spotName');
+            $table->string('spotText');
+            $table->string('spotType');
             $table->string('spotLat');
             $table->string('spotLng');
             $table->longText('spotImg');

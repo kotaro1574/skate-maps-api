@@ -38,9 +38,12 @@ class PostsController extends Controller
             'spotLng' => 'required',
         ]);
         $now = Carbon::now();
+        $spotType = serialize($request->spotType);
         $param = [
             'user_id' => $request->userId,
             'spotName' => $request->spotName,
+            'spotText' => $request->spotText,
+            'spotType' => $spotType,
             'spotImg' => $request->spotImg,
             'spotLat' => $request->spotLat,
             'spotLng' => $request->spotLng,
@@ -63,14 +66,19 @@ class PostsController extends Controller
     public function show(Post $post)
     {
         $spot = Post::where('id', $post->id)->first();
+        $type = unserialize($spot->spotType);
+        $user_id = $spot->user_id;
+        $user = DB::table('users')->where('id', (int)$user_id)->first();
         $like = DB::table('likes')->where('post_id', $post->id)->get();
         $comment = DB::table('comments')->where('post_id', $post->id)->get();
         $commentData = array();
         if (empty($comment->toArray())) {
             $spotData = [
                 'spot' => $spot,
+                'user' => $user,
                 'like' => $like,
-                'comments' => $commentData
+                'comments' => $commentData,
+                'type' => $type
             ];
             return response()->json($spotData, 200);
         }
@@ -84,6 +92,7 @@ class PostsController extends Controller
         }
         $spotData = [
             'spot' => $spot,
+            'user' => $user,
             'like' => $like,
             'comments' => $commentData
         ];
