@@ -32,8 +32,10 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'spotName' => 'required|max:255',
+            'spotName' => 'required|max:150',
+            'spotText' => 'required|max:500',
             'spotImg' => 'required',
+            'spotType' => 'required',
             'spotLat' => 'required',
             'spotLng' => 'required',
         ]);
@@ -108,13 +110,24 @@ class PostsController extends Controller
      */
     public function update(Request $request, Post $post)
     {
+        $request->validate([
+            'spotName' => 'required|max:255',
+            'spotText' => 'required|max:500',
+            'spotImg' => 'required',
+            'spotType' => 'required',
+            'spotLat' => 'required',
+            'spotLng' => 'required',
+        ]);
+        $spotType = serialize($request->spotType);
         $param = [
             'spotName' => $request->spotName,
+            'spotText' => $request->spotText,
             'spotImg' => $request->spotImg,
+            'spotType' => $spotType,
             'spotLat' => $request->spotLat,
             'spotLng' => $request->spotLng
         ];
-        DB::table('posts')->where('id', $request->spotId)->update($param);
+        DB::table('posts')->where('id', $post->id)->update($param);
         return response()->json([
             'message' => 'Post updated seccessfully',
             'data' => $param

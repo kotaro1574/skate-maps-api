@@ -16,10 +16,19 @@ class CommentsController extends Controller
      */
     public function index(Request $request)
     {
-        $comments = Comment::where('post_id', $request->post_id)->get();
+        $commentData = array();
+        $items = Comment::where('post_id', $request->post_id)->get();
+        foreach ($items as $comment) {
+            $commentUser = DB::table('users')->where('id', $comment->user_id)->first();
+            $comments = [
+                'comment' => $comment,
+                'commentUser' => $commentUser
+            ];
+            array_push($commentData, $comments);
+        }
         return response()->json([
             'message' => 'OK',
-            'data' => $comments
+            'comments' => $commentData
         ]);
     }
 
@@ -36,7 +45,6 @@ class CommentsController extends Controller
             'post_id' => $request->post_id,
             'user_id' => $request->user_id,
             'comment' => $request->comment,
-            'commentImg' => $request->commentImg,
             'created_at' => $now,
             'updated_at' => $now
         ];
