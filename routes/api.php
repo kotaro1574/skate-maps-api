@@ -9,6 +9,7 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\LikesController;
+use App\Http\Controllers\BestTrickController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,6 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResource('/besttricks', BestTrickController::class);
 Route::apiResource('/posts', PostsController::class);
 Route::apiResource('/comments', CommentsController::class);
 Route::post('/register', [RegisterController::class, 'post']);
