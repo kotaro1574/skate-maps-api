@@ -96,7 +96,8 @@ class PostsController extends Controller
             'spot' => $spot,
             'user' => $user,
             'like' => $like,
-            'comments' => $commentData
+            'comments' => $commentData,
+            'type' => $type
         ];
         return response()->json($spotData, 200);
     }

@@ -14,9 +14,13 @@ class BestTrickController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $items = BestTrick::where('post_id', $request->id)->orderBy('id', 'desc')->get();
+        return response()->json([
+            'message' => 'OK',
+            'data' => $items
+        ], 200);
     }
 
     /**
@@ -31,10 +35,10 @@ class BestTrickController extends Controller
         $file_name = time() . '.' . $request->file->getClientOriginalName();
         $request->file->storeAs('public', $file_name);
         $path = 'storage/' . $file_name;
-
+        
         $param = [
-            'post_id' => $request->spotId,
-            'user_id' => $request->userId,
+            'post_id' => $request->spot_id,
+            'user_id' => $request->user_id,
             'path' => $path,
             'created_at' => $now,
             'updated_at' => $now,
@@ -53,9 +57,17 @@ class BestTrickController extends Controller
      * @param  \App\Models\BestTrick  $bestTrick
      * @return \Illuminate\Http\Response
      */
-    public function show(BestTrick $bestTrick)
+    public function show(BestTrick $bestTrick, Request $request)
     {
-        
+        $file = BestTrick::where('id', $request->id)->first();
+        $user_id = $file->user_id;
+        $user = DB::table('users')->where('id', (int)$user_id)->first();
+
+        $param = [
+            'file' => $file,
+            'user' => $user
+        ];
+        return response()->json($param, 200);
     }
 
     /**
@@ -76,8 +88,19 @@ class BestTrickController extends Controller
      * @param  \App\Models\BestTrick  $bestTrick
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BestTrick $bestTrick)
+    public function destroy(BestTrick $bestTrick, Request $request)
     {
-        //
+        $item = BestTrick::where('id', $request->id)->delete();
+        if ($item) {
+            return response()->json(
+                ['message' => 'BestTrick deleted successfully'],
+                200
+            );
+        } else {
+            return response()->json(
+                ['message' => 'BestTrick not found'],
+                404
+            );
+        }
     }
 }
