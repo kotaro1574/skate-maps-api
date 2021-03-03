@@ -31,6 +31,7 @@ class BestTrickController extends Controller
      */
     public function store(Request $request)
     {
+        var_dump($request->file);
         $now = Carbon::now();
         $file_name = time() . '.' . $request->file->getClientOriginalName();
         $request->file->storeAs('public', $file_name);

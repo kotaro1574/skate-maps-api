@@ -34,7 +34,6 @@ class PostsController extends Controller
         $request->validate([
             'spotName' => 'required|max:150',
             'spotText' => 'required|max:500',
-            'spotImg' => 'required',
             'spotType' => 'required',
             'spotLat' => 'required',
             'spotLng' => 'required',
@@ -46,16 +45,16 @@ class PostsController extends Controller
             'spotName' => $request->spotName,
             'spotText' => $request->spotText,
             'spotType' => $spotType,
-            'spotImg' => $request->spotImg,
             'spotLat' => $request->spotLat,
             'spotLng' => $request->spotLng,
             'created_at' => $now,
             'updated_at' => $now,
         ];
         DB::table('posts')->insert($param);
+        $item = DB::table('posts')->orderBy('id', 'desc')->first();
         return response()->json([
             'message' => 'Post created successfully',
-            'data' => $param
+            'data' => $item
         ], 200);
     }
 

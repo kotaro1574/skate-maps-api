@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\FilesController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
@@ -27,6 +28,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::apiResource('/besttricks', BestTrickController::class);
 Route::apiResource('/posts', PostsController::class);
+Route::apiResource('/files', FilesController::class);
 Route::apiResource('/comments', CommentsController::class);
 Route::post('/register', [RegisterController::class, 'post']);
 Route::post('/login', [LoginController::class, 'post']);
