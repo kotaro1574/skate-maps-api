@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class FilesController extends Controller
@@ -26,18 +27,18 @@ class FilesController extends Controller
      */
     public function store(Request $request)
     {
-        foreach ($request->files as $files) {
-            var_dump($files);
-            foreach ($files as $file) {
-                $file_name = time() . '.' . $file->getClientOriginalName();
-                $file->file()->storeAs('public', $file_name);
-                $path = 'storage/' . $file_name;
-                $param = [
-                    'post' => $request->post_id,
-                    'path' => $path
-                ];
-                DB::table('files')->insert($param);
-            }
+        $now = Carbon::now();
+        foreach ($request->file as $item) {
+            $file_name = time() . '.' . $item->getClientOriginalName();
+            $item->storeAs('public', $file_name);
+            $path = 'storage/' . $file_name;
+            $param = [
+                'post_id' => $request->post_id,
+                'path' => $path,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+            DB::table('files')->insert($param);
         }
         return response()->json([
             'message' => 'files created successfully',

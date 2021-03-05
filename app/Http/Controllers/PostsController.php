@@ -69,6 +69,7 @@ class PostsController extends Controller
         $spot = Post::where('id', $post->id)->first();
         $type = unserialize($spot->spotType);
         $user_id = $spot->user_id;
+        $image = DB::table('files')->where('post_id', $post->id)->get();
         $user = DB::table('users')->where('id', (int)$user_id)->first();
         $like = DB::table('likes')->where('post_id', $post->id)->get();
         $comment = DB::table('comments')->where('post_id', $post->id)->get();
@@ -76,6 +77,7 @@ class PostsController extends Controller
         if (empty($comment->toArray())) {
             $spotData = [
                 'spot' => $spot,
+                'image' => $image,
                 'user' => $user,
                 'like' => $like,
                 'comments' => $commentData,
@@ -93,6 +95,7 @@ class PostsController extends Controller
         }
         $spotData = [
             'spot' => $spot,
+            'image' => $image,
             'user' => $user,
             'like' => $like,
             'comments' => $commentData,
@@ -113,7 +116,6 @@ class PostsController extends Controller
         $request->validate([
             'spotName' => 'required|max:255',
             'spotText' => 'required|max:500',
-            'spotImg' => 'required',
             'spotType' => 'required',
             'spotLat' => 'required',
             'spotLng' => 'required',
@@ -122,7 +124,6 @@ class PostsController extends Controller
         $param = [
             'spotName' => $request->spotName,
             'spotText' => $request->spotText,
-            'spotImg' => $request->spotImg,
             'spotType' => $spotType,
             'spotLat' => $request->spotLat,
             'spotLng' => $request->spotLng
