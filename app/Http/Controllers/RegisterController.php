@@ -19,21 +19,28 @@ class RegisterController extends Controller
             'userLat' => 'required',
             'userLng' => 'required'
         ]);
-        $now = Carbon::now();
-        $hashed_password = Hash::make($request->password);
-        $param = [
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => $hashed_password,
-            "userLat" => $request->userLat,
-            "userLng" => $request->userLng,
-            "created_at" => $now,
-            "updated_at" => $now,
-        ];
-        DB::table('users')->insert($param);
-        return response()->json([
-            'message' => 'User created successfully',
-            'data' => $param
-        ], 200);
+        $email = DB::table('users')->where('email', $request->email)->first(); 
+        if ($email) {
+            return response()->json([
+                'error' => 'このメールアドレスは、既に登録されています。',
+            ], 200);
+        } else {
+            $now = Carbon::now();
+            $hashed_password = Hash::make($request->password);
+            $param = [
+                "name" => $request->name,
+                "email" => $request->email,
+                "password" => $hashed_password,
+                "userLat" => $request->userLat,
+                "userLng" => $request->userLng,
+                "created_at" => $now,
+                "updated_at" => $now,
+            ];
+            DB::table('users')->insert($param);
+            return response()->json([
+                'message' => 'User created successfully',
+                'data' => $param
+            ], 200);
+        }
     }
 }

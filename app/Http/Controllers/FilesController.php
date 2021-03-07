@@ -31,7 +31,7 @@ class FilesController extends Controller
         foreach ($request->file as $item) {
             $file_name = time() . '.' . $item->getClientOriginalName();
             $item->storeAs('public', $file_name);
-            $path = 'storage/' . $file_name;
+            $path = 'http://127.0.0.1:8000/storage/' . $file_name;
             $param = [
                 'post_id' => $request->post_id,
                 'path' => $path,

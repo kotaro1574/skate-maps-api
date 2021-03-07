@@ -34,14 +34,31 @@ class UsersController extends Controller
             'name' => 'max:255',
             'profile' => 'max:600'
         ]);
-        $param = [
-            'name' => $request->name,
-            'profile' => $request->profile,
-            'userLat' => $request->userLat,
-            'userLng' => $request->userLng,
-            'image' => $request->file
-        ];
-        DB::table('users')->where('email', $request->email)->update($param);
+        if(is_string($request->file) || !$request->file){
+            $param = [
+                'name' => $request->name,
+                'profile' => $request->profile,
+                'userLat' => $request->userLat,
+                'userLng' => $request->userLng,
+                'image' => $request->file,
+                'instagramURL' => $request->instagramURL,
+                'twitterURL' => $request->twitterURL
+            ];
+        } else {
+            $file_name = time() . '.' . $request->file->getClientOriginalName();
+            $request->file->storeAs('public', $file_name);
+            $path = 'http://127.0.0.1:8000/storage/' . $file_name;
+            $param = [
+                'name' => $request->name,
+                'profile' => $request->profile,
+                'userLat' => $request->userLat,
+                'userLng' => $request->userLng,
+                'image' => $path,
+                'instagramURL' => $request->instagramURL,
+                'twitterURL' => $request->twitterURL
+            ];
+        }
+        DB::table('users')->where('id', $request->id)->update($param);
         return response()->json([
             'message' => 'User updated successfully',
             'data' => $param

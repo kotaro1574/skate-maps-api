@@ -34,7 +34,7 @@ class BestTrickController extends Controller
         $now = Carbon::now();
         $file_name = time() . '.' . $request->file->getClientOriginalName();
         $request->file->storeAs('public', $file_name);
-        $path = 'storage/' . $file_name;
+        $path = 'http://127.0.0.1:8000/storage/' . $file_name;
         
         $param = [
             'post_id' => $request->spot_id,

@@ -35,6 +35,6 @@ Route::post('/login', [LoginController::class, 'post']);
 Route::post('/logout', [LogoutController::class, 'post']);
 Route::get('/user', [UsersController::class, 'get']);
 Route::get('/user/{user}', [UsersController::class, 'show']);
-Route::put('/user', [UsersController::class, 'put']);
+Route::put('/user/{user}', [UsersController::class, 'put']);
 Route::post('/like', [LikesController::class, 'post']);
 Route::delete('/like', [LikesController::class, 'delete']);
